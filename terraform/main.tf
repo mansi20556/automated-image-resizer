@@ -82,6 +82,7 @@ data "archive_file" "lambda_zip" {
   output_path = "../lambda.zip"
 }
 
+
 # ✅ Lambda function
 resource "aws_lambda_function" "resizer" {
   function_name = "${var.project_name}-lambda"
