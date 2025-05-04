@@ -1,5 +1,5 @@
 import boto3
-from PIL import Image # type: ignore
+from PIL import Image # Pillow library for image processing
 import io
 import os
 
