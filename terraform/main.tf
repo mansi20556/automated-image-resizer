@@ -75,13 +75,14 @@ data "archive_file" "lambda_zip" {
   output_path = "../lambda.zip"
 }
 
-# ✅ Define Lambda Layer for Pillow
 resource "aws_lambda_layer_version" "pillow_layer" {
-  filename         = "s3://mansi-image-resizer-source/lambda-layers/pillow-layer.zip"
-  layer_name       = "pillow-layer"
-  compatible_runtimes = ["python3.13"]  # Update to use Python 3.13 runtime
-  description      = "Pillow layer hosted by Mansi"
+  s3_bucket           = "mansi-image-resizer-source"
+  s3_key              = "lambda-layers/pillow-layer.zip"
+  layer_name          = "pillow-layer"
+  compatible_runtimes = ["python3.13"]
+  description         = "Pillow layer hosted by Mansi"
 }
+
 
 # ✅ Lambda function
 resource "aws_lambda_function" "resizer" {
