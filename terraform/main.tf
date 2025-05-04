@@ -63,13 +63,6 @@ resource "aws_iam_role_policy" "lambda_s3" {
           "${aws_s3_bucket.source_bucket.arn}/*",
           "${aws_s3_bucket.dest_bucket.arn}/*"
         ]
-      },
-      {
-        Effect = "Allow"
-        Action = [
-          "lambda:GetLayerVersion"
-        ]
-        Resource = "arn:aws:lambda:us-east-1:770693421928:layer:Klayers-p39-Pillow:12"
       }
     ]
   })
@@ -82,13 +75,20 @@ data "archive_file" "lambda_zip" {
   output_path = "../lambda.zip"
 }
 
+# ✅ Define Lambda Layer for Pillow
+resource "aws_lambda_layer_version" "pillow_layer" {
+  filename         = "s3://mansi-image-resizer-source/lambda-layers/pillow-layer.zip"
+  layer_name       = "pillow-layer"
+  compatible_runtimes = ["python3.13"]  # Update to use Python 3.13 runtime
+  description      = "Pillow layer hosted by Mansi"
+}
 
 # ✅ Lambda function
 resource "aws_lambda_function" "resizer" {
   function_name = "${var.project_name}-lambda"
   role          = aws_iam_role.lambda_exec_role.arn
   handler       = "resize.lambda_handler"
-  runtime       = "python3.9"
+  runtime       = "python3.13"
   filename      = data.archive_file.lambda_zip.output_path
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
 
@@ -98,10 +98,12 @@ resource "aws_lambda_function" "resizer" {
     }
   }
 
-  layers = [
-    "arn:aws:lambda:us-east-1:770693421928:layer:Klayers-p39-Pillow:12"
+  depends_on = [
+    aws_lambda_layer_version.pillow_layer
   ]
 }
+
+
 
 # ✅ Permission to allow S3 to invoke Lambda
 resource "aws_lambda_permission" "allow_s3" {

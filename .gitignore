@@ -22,3 +22,8 @@ __pycache__/
 
 # VS Code settings (optional, IDE-specific)
 .vscode/
+
+# Ignore the virtual environment folder
+venv/
+myenv/
+*.env
