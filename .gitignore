@@ -1,0 +1,24 @@
+# Ignore compiled zip files (auto-generated Lambda package)
+lambda.zip
+
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# Terraform state files (sensitive!)
+*.tfstate
+*.tfstate.backup
+.terraform/
+.terraform.lock.hcl
+
+# Ignore AWS credentials if ever used locally (just in case)
+*.pem
+*.key
+*.env
+.aws/
+
+# Mac system files
+.DS_Store
+
+# VS Code settings (optional, IDE-specific)
+.vscode/
