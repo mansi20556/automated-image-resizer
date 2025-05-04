@@ -27,7 +27,6 @@ jobs:
     - name: Install Python dependencies and zip Lambda
       run: |
         cd lambda
-        pip install Pillow -t .                      # Install Pillow in lambda dir
         zip -r ../terraform/lambda.zip .            # Zip everything in lambda/
         cd ..
 
